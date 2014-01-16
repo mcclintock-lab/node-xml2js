@@ -183,9 +183,12 @@ class exports.Parser extends events.EventEmitter
     # the sax parser isn't state of the art either.
     err = false
     @saxParser.onerror = (error) =>
+      @saxParser.resume()
       if ! err
         err = true
         @emit "error", error
+
+    @saxParser.onend = () => @emit "end"
 
     # always use the '#' key, even if there are no subkeys
     # setting this property by and is deprecated, yet still supported.
